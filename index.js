@@ -31,13 +31,42 @@ app.get("/get-data", async (req, res) => {
     const account_number = req.body.account_number;
     const email_address = req.body.email_address;
     const identity_number = req.body.identity_number;
-    const token = req.headers.authorization.split(" ")[1]
-      ? req.headers.authorization.split(" ")[1]
-      : null;
+    const token = req.headers.authorization.split(" ")[1];
 
     await verifyToken(token).then(async (isValid) => {
       if (isValid.status == 200) {
         let result = await getData(
+          client,
+          col,
+          username,
+          account_number,
+          email_address,
+          identity_number
+        );
+        res.status(result.status).send(result);
+      } else {
+        res.status(isValid.status).send(isValid);
+      }
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
+});
+
+app.put("/add-data", async (req, res) => {
+  try {
+    const username = req.body.username;
+    const account_number = req.body.account_number;
+    const email_address = req.body.email_address;
+    const identity_number = req.body.identity_number;
+    const token = req.headers.authorization.split(" ")[1];
+
+    await verifyToken(token).then(async (isValid) => {
+      if (isValid.status == 200) {
+        let result = await addData(
           client,
           col,
           username,
@@ -59,58 +88,67 @@ app.get("/get-data", async (req, res) => {
   }
 });
 
-app.put("/add-data", async (req, res) => {
-  const username = req.body.username;
-  const account_number = req.body.account_number;
-  const email_address = req.body.email_address;
-  const identity_number = req.body.identity_number;
-
-  let result = await addData(
-    client,
-    col,
-    username,
-    account_number,
-    email_address,
-    identity_number
-  );
-
-  res.status(result.status).send(result);
-});
-
 app.put("/update-data", async (req, res) => {
-  const username = req.body.username;
-  const account_number = req.body.account_number;
-  const email_address = req.body.email_address;
-  const identity_number = req.body.identity_number;
+  try {
+    const username = req.body.username;
+    const account_number = req.body.account_number;
+    const email_address = req.body.email_address;
+    const identity_number = req.body.identity_number;
+    const token = req.headers.authorization.split(" ")[1];
 
-  let result = await updateData(
-    client,
-    col,
-    username,
-    account_number,
-    email_address,
-    identity_number
-  );
+    await verifyToken(token).then(async (isValid) => {
+      if (isValid.status == 200) {
+        let result = await updateData(
+          client,
+          col,
+          username,
+          account_number,
+          email_address,
+          identity_number
+        );
 
-  res.status(result.status).send(result);
+        res.status(result.status).send(result);
+      } else {
+        res.status(isValid.status).send(isValid);
+      }
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
 });
 
 app.delete("/delete-data", async (req, res) => {
-  const identity_number = req.body.identity_number;
+  try {
+    const identity_number = req.body.identity_number;
 
-  let result = await deleteData(client, col, identity_number);
+    await verifyToken(token).then(async (isValid) => {
+      if (isValid.status == 200) {
+        let result = await deleteData(client, col, identity_number);
 
-  res.status(result.status).send(result);
+        res.status(result.status).send(result);
+      } else {
+        res.status(isValid.status).send(isValid);
+      }
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
 });
 
-app.post("/signin", async (req, res, next) => {
+app.post("/signin", async (req, res) => {
   let { username, password } = req.body;
   let check = await checkUser(client, col_user, username, password);
 
   res.status(check.status).send(check);
 });
 
-app.post("/signup", async (req, res, next) => {
+app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
 
   await createUser(client, col_user, username, password).then(

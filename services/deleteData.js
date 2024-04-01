@@ -6,11 +6,18 @@ async function deleteData(client, col, identity_number) {
       identityNumber: identity_number,
     });
 
-    return {
-      status: 200,
-      message: "Data successfully deleted",
-      data: result,
-    };
+    if (result == null) {
+      return {
+        status: 500,
+        message: "Data not found, nothing is deleted",
+      };
+    } else {
+      return {
+        status: 200,
+        message: "Data successfully deleted",
+        data: result,
+      };
+    }
   } catch (e) {
     return {
       status: 500,

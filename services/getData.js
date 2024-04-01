@@ -1,3 +1,5 @@
+const { createClient } = require("redis");
+
 async function getData(
   client,
   col,
@@ -13,21 +15,36 @@ async function getData(
   if (identity_number) columns["identityNumber"] = identity_number;
 
   try {
+    const redis = createClient();
     await client.connect();
+    await redis.connect();
     let options = columns;
-    let result = await col.findOne(options);
 
-    let msg = {};
-    if (result) {
-      msg["status"] = 200;
-      msg["message"] = "Data successfully retrieved";
-      msg["data"] = result;
+    redis.on("error", (err) => console.log("Redis Client Error", err));
+
+    let cache = await redis.get("data");
+    if (cache != null) {
+      return {
+        status: 200,
+        message: "Data successfully retrieved with Redis",
+        data: JSON.parse(cache),
+      };
     } else {
-      msg["status"] = 500;
-      msg["message"] = "No data found.";
+      let result = await col.findOne(options);
+      await redis.SETEX("data", 3600, JSON.stringify(result));
+      if (result) {
+        return {
+          status: 200,
+          message: "Data successfully retrieved",
+          data: result,
+        };
+      } else {
+        return {
+          status: 500,
+          message: "No data found.",
+        };
+      }
     }
-
-    return msg;
   } catch (e) {
     return {
       status: 500,

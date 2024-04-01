@@ -1,4 +1,4 @@
-const { generateTimeBasedUUID } = require("../generateUID");
+const { generateTimeBasedUUID } = require("../tools/generateUID");
 
 async function addData(
   client,

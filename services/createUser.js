@@ -1,4 +1,4 @@
-const { generateTimeBasedUUID } = require("../generateUID");
+const { generateTimeBasedUUID } = require("../tools/generateUID");
 const bcrypt = require("bcrypt");
 
 async function createUser(client, col, username, password) {
