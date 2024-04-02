@@ -1,0 +1,20 @@
+version: "3.4"
+
+services:
+  ms_kingsleyanandsamantha_betest:
+    container_name: ms_kingsleyanandsamantha_betest
+    image: ms_kingsleyanandsamantha_betest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    depends_on:
+      - redis_kingsleyanandsamantha_betest
+  redis_kingsleyanandsamantha_betest:
+    container_name: redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
