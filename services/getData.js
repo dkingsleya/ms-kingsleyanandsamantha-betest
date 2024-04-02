@@ -15,7 +15,10 @@ async function getData(
   if (identity_number) columns["identityNumber"] = identity_number;
 
   try {
-    const redis = createClient();
+    const redis = createClient({
+      host: "redis", // Use custom hostname
+      port: 6379,
+    });
     await client.connect();
     await redis.connect();
     let options = columns;
@@ -31,8 +34,9 @@ async function getData(
       };
     } else {
       let result = await col.findOne(options);
-      await redis.SETEX("data", 3600, JSON.stringify(result));
       if (result) {
+        await redis.SETEX("data", 3600, JSON.stringify(result));
+
         return {
           status: 200,
           message: "Data successfully retrieved",

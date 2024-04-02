@@ -1,48 +1,48 @@
 const { createClient } = require("redis");
 
-async function getAllData(
-    client,
-    col,
-) {
-    try {
-        const redis = createClient();
-        await client.connect();
-        await redis.connect();
+async function getAllData(client, col) {
+  try {
+    const redis = createClient({
+      host: "redis", // Use custom hostname
+      port: 6379,
+    });
+    await client.connect();
+    await redis.connect();
 
-        redis.on("error", (err) => console.log("Redis Client Error", err));
+    redis.on("error", (err) => console.log("Redis Client Error", err));
 
-        let cache = await redis.get("all-data");
-        if (cache != null) {
-            return {
-                status: 200,
-                message: "All Data successfully retrieved with Redis",
-                data: JSON.parse(cache),
-            };
-        } else {
-            let result = await col.find().toArray();
-            await redis.SETEX("all-data", 3600, JSON.stringify(result));
-            if (result) {
-                return {
-                    status: 200,
-                    message: "All Data successfully retrieved",
-                    data: result,
-                };
-            } else {
-                return {
-                    status: 500,
-                    message: "No data found.",
-                };
-            }
-        }
-    } catch (e) {
+    let cache = await redis.get("all-data");
+    if (cache != null) {
+      return {
+        status: 200,
+        message: "All Data successfully retrieved with Redis",
+        data: JSON.parse(cache),
+      };
+    } else {
+      let result = await col.find().toArray();
+      if (result) {
+        await redis.SETEX("all-data", 3600, JSON.stringify(result));
         return {
-            status: 500,
-            message: e.message,
+          status: 200,
+          message: "All Data successfully retrieved",
+          data: result,
         };
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
+      } else {
+        return {
+          status: 500,
+          message: "No data found.",
+        };
+      }
     }
+  } catch (e) {
+    return {
+      status: 500,
+      message: e.message,
+    };
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
 }
 
 module.exports = { getAllData };
