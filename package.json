@@ -6,5 +6,15 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "6.5",
     "redis": "^4.6.13"
-  }
+  },
+  "name": "ms-kingsleyanandsamantha-betest",
+  "description": "```\r node --env-file=.env index.js\r ```",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }
