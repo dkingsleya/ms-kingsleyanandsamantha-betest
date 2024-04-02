@@ -12,6 +12,7 @@ const { createUser } = require("./services/createUser");
 const { assignToken } = require("./services/assignToken");
 const { checkUser } = require("./services/checkUser");
 const { verifyToken } = require("./services/verifyToken");
+const { getAllData } = require("./services/getAllData");
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -24,6 +25,26 @@ const col = db.collection(process.env.MONGO_DB_COLLECTION);
 const col_user = db.collection(process.env.MONGO_DB_USER_COLLECTION);
 
 app.use(bodyParser.json());
+
+app.get("/get-all-data", async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+
+    await verifyToken(token).then(async (isValid) => {
+      if (isValid.status == 200) {
+        let result = await getAllData(client, col);
+        res.status(result.status).send(result);
+      } else {
+        res.status(isValid.status).send(isValid);
+      }
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
+});
 
 app.get("/get-data", async (req, res) => {
   try {
