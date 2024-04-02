@@ -27,7 +27,7 @@ redis-cli
 
 #### Add Docker files to the project
 
-- Open the Command Palette (Ctrl+Shift+P) and use Docker: Add Docker Files to Workspace... command
+- Open the Command Palette (Ctrl+Shift+P) and use <code>Docker: Add Docker Files to Workspace...</code> command
 
 #### Add an environment variable to the image
 
@@ -36,7 +36,7 @@ redis-cli
 
 #### Build the service image
 
-- Open the Command Palette (Ctrl+Shift+P) and select the Docker Images: Build Image... command.
+- Open the Command Palette (Ctrl+Shift+P) and select the <code>Docker Images: Build Image...</code> command.
 - Open the Docker Explorer and verify that the new image is visible in the Images tree:
 
 #### Run the service container
@@ -45,9 +45,14 @@ redis-cli
 - Test the app just like regular development
 - When done testing, right-click the container in the Containers tree and select Stop
 
-#### Reference
+</br>
+</br>
 
-- [Docker Reference](https://code.visualstudio.com/docs/containers/quickstart-node#_run-the-service-locally)
+> [!TIP]
+> See Docker References here -> [Docker Reference](https://code.visualstudio.com/docs/containers/quickstart-node#_run-the-service-locally)
+
+</br>
+</br>
 
 ## WSL Trouble-shooting
 
@@ -55,30 +60,33 @@ redis-cli
 sc config LxssManager start=auto
 ```
 
-## Previews
+## Application Snapshots
+#### Running with Docker
+![Preview](/docker.png)
+
 #### Sign In JWT
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/sign-in.png)
+![Preview](/sign-in.png)
 
 #### Sign Up User
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/sign-up-user.png)
+![Preview](/sign-up-user.png)
 
 #### Insert Data
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/add-data.png)
+![Preview](/add-data.png)
 
 #### Update Data
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/update-data.png)
+![Preview](/update-data.png)
 
 #### Delete Data
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/delete-data.png)
+![Preview](/delete-data.png)
 
 #### Read Data
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/get-data.png)
+![Preview](/get-data.png)
 
 #### Get Token
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/get-token.png)
+![Preview](/get-token.png)
 
 #### Redis Before (Cache not yet created)
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/redis-1.png)
+![Preview](/redis-1.png)
 
 #### Redis After
-![Preview](https://github.com/dkingsleya/ms-kingsleyanandsamantha-betest/blob/main/redis-2.png)
+![Preview](/redis-2.png)
